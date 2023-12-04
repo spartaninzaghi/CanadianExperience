@@ -11,7 +11,15 @@
 /// The scale of the pulley belt. This tucks
 /// in the belts tightly behind the pulley
 /// by trimming its separation by 95%
-const double BeltScale = 0.95f;
+const double BeltScale = 0.93f;
+
+/// Maximum amount to rock the belt
+/// in pixels per second
+const double BeltRockAmount = 1;
+
+/// How quickly to rock the belt in radians per second
+/// This is divided by the length to get the actual rate
+const double BeltRockBaseRate = M_PI * 1000;
 
 /**
  * Constructor
@@ -39,6 +47,8 @@ void Pulley::Update(double elapsed)
     {
         mSource.GetSink()->Rotate(mRotation, mSpeed);
     }
+
+
 }
 
 
@@ -278,6 +288,28 @@ void Pulley::DrawSameRadiiBelts(std::shared_ptr<wxGraphicsContext> graphics)
     auto belt2P2 = p2 - beta;
 
     //
+    // Rock Belts
+    //
+    auto beltLength = (belt1P2 - belt1P1).GetVectorLength();
+    mBeltRockRate = BeltRockBaseRate / beltLength;
+
+    std::vector<wxPoint2DDouble> rocks;
+
+    if ( mSpeed && (int)(mBeltRockRate * GetMachine()->GetMachineTime()) % int(mBeltRockRate) )
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            std::uniform_real_distribution<double> distribution(-BeltRockAmount, BeltRockAmount);
+            auto rockAmount = wxPoint2DDouble(distribution(mRandom), distribution(mRandom));
+            rocks.push_back(rockAmount);
+        }
+        belt1P1 += rocks[0];
+        belt1P2 += rocks[1];
+        belt2P1 += rocks[2];
+        belt2P2 += rocks[3];
+    }
+
+    //
     // Draw Belt #1 and Belt #2
     //
     graphics->StrokeLine(belt1P1.m_x, belt1P1.m_y, belt1P2.m_x, belt1P2.m_y);
@@ -315,6 +347,28 @@ void Pulley::DrawDifferentRadiiBelts(std::shared_ptr<wxGraphicsContext> graphics
 
     auto belt2P1 = p1 - offset1;
     auto belt2P2 = p2 - offset2;
+
+    //
+    // Rock Belts
+    //
+    auto beltLength = (belt1P2 - belt1P1).GetVectorLength();
+    mBeltRockRate = BeltRockBaseRate / beltLength;
+
+    std::vector<wxPoint2DDouble> rocks;
+
+    if ( mSpeed && (int)(mBeltRockRate * GetMachine()->GetMachineTime()) % int(mBeltRockRate) )
+    {
+        for(int i = 0; i < 4; i++)
+        {
+            std::uniform_real_distribution<double> distribution(-BeltRockAmount, BeltRockAmount);
+            auto rockAmount = wxPoint2DDouble(distribution(mRandom), distribution(mRandom));
+            rocks.push_back(rockAmount);
+        }
+        belt1P1 += rocks[0];
+        belt1P2 += rocks[1];
+        belt2P1 += rocks[2];
+        belt2P2 += rocks[3];
+    }
 
     //
     // Draw Belt #1 and Belt #2

@@ -11,19 +11,11 @@
 #ifndef CANADIANEXPERIENCE_MACHINELIB_PULLEY_H
 #define CANADIANEXPERIENCE_MACHINELIB_PULLEY_H
 
+#include <random>
 #include "Polygon.h"
 #include "Component.h"
 #include "RotationSource.h"
 #include "RotationSink.h"
-
-/// Maximum amount to rock the belt
-/// No, I'm not going to tell you what
-/// the units are.
-const double BeltRockAmount = 0.01;
-
-/// How quickly to rock the belt in radians per second
-/// This is divided by the length to get the actual rate
-const double BeltRockBaseRate = M_PI * 1000;
 
 /**
  * Class for a pulley
@@ -42,6 +34,14 @@ private:
     cse335::Polygon mPulley; ///< The polygon for this pulley
 
     std::shared_ptr<Pulley> mDrivenPulley = nullptr; ///< The pulley being driven by this pulley
+
+    std::mt19937 mRandom;     ///< Random number generator for belt rock amount
+    double mBeltRockRate = 1; ///< How quickly to rock pulley belts in cm/s
+
+    ///< Collection of amounts to rock pulley belts by horizontally & vertically
+    std::vector<wxPoint2DDouble> mBeltRockAmounts;
+
+    enum class Index {B1Start=0, B1End=1, B2Start=2, B2End=3};
 
 
 public:
