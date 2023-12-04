@@ -34,7 +34,7 @@ const auto RodSize = wxSize(750, 500);
 const auto CurtainSize = wxSize(375, 500);
 
 /// Scale reduction per second
-const double ScaleReduction = 0.018f;
+const double ScaleReduction = 0.02f;
 
 /// The rotation of the curtain parts (zero)
 const double CurtainRotation = 0.0;

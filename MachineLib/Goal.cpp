@@ -115,10 +115,7 @@ void Goal::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     // Draw the score text with an inverted scale
     //
     std::wstringstream score;
-    if (mScore < 10)
-        score << L"0";
-
-    score << mScore;
+    (mScore < 10) ? score << L"0" << mScore : score << mScore;
 
     auto rect = ScoreboardRectangle;
 

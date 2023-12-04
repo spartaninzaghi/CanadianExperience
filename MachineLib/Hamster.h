@@ -73,6 +73,7 @@ public:
     /// Assignment operator
     void operator=(const Hamster &) = delete;
 
+    void SwitchHamsterImage();
 };
 
 #endif //CANADIANEXPERIENCE_MACHINELIB_HAMSTER_H

@@ -28,7 +28,9 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
 
     auto picture = std::make_shared<Picture>();
 
-    // Create the background and add it
+    //
+    // 1 Create the background and add it
+    //
     auto background = std::make_shared<Actor>(L"Background");
     background->SetClickable(false);
     background->SetPosition(wxPoint(0, 0));
@@ -39,7 +41,7 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     picture->AddActor(background);
 
     //
-    // Create Left Machine and Add It
+    // 2A Create Left Machine and Add It
     //
     auto leftMachineActor = std::make_shared<Actor>(L"LeftMachine");
     leftMachineActor->SetPosition(wxPoint(350,420));
@@ -50,7 +52,7 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     picture->AddActor(leftMachineActor);
 
     //
-    // Create Right Machine and Add It
+    // 2B Create Right Machine and Add It
     //
     auto rightMachineActor = std::make_shared<Actor>(L"RightMachine");
     rightMachineActor->SetPosition(wxPoint(1150,420));
@@ -60,7 +62,9 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     rightMachineActor->SetRoot(rightMachine);
     picture->AddActor(rightMachineActor);
 
-    // Create and add Harold
+    //
+    // 3 Create and add Harold
+    //
     HaroldFactory haroldFactory;
     auto harold = haroldFactory.Create(imagesDir);
 
@@ -68,7 +72,9 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     harold->SetPosition(wxPoint(300, 600));
     picture->AddActor(harold);
 
-    // Create and add Sparty
+    //
+    // 4 Create and add Sparty
+    //
     SpartyFactory spartyFactory;
     auto sparty = spartyFactory.Create(imagesDir);
 

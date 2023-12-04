@@ -86,25 +86,10 @@ void Hamster::Update(double elapsed)
     //
     mRotation += -mSpeed * elapsed;
 
-    if ( abs(HamsterSpeed*mRotation)  )
-    {
-        //
-        // Move forward through the hamster image indices until we arrive at 3
-        //
-        if(mHamsterIndex == 1)
-            mCycleMode = Mode::Advance;
-
-        else if(mHamsterIndex == 3)
-            mCycleMode = Mode::Reverse;
-
-        //
-        // Set the current hamster image index based on the cycle mode
-        //
-        if(mCycleMode == Mode::Advance)
-            mHamsterIndex++;
-        else
-            mHamsterIndex--;
-    }
+    //
+    // Switch to the appropriate hamster image based on the cycle
+    //
+    SwitchHamsterImage();
 
     //
     // Hamster is a rotation source : Rotate its rotation sink
@@ -137,10 +122,16 @@ void Hamster::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     graphics->PushState();
     graphics->Translate(mWheelPosition.m_x, mWheelPosition.m_y);
 
-    if(mSpeed < 0)
-        graphics->Scale(-1, 1);
+    if (!mHamsterIndex) // Sleeping hamster
+        mHamsters[mHamsterIndex]->DrawPolygon(graphics, 0, 0, 0);
 
-    mHamsters[mHamsterIndex]->DrawPolygon(graphics, 0, 0, 0);
+    else
+    {
+        if(mSpeed < 0)
+            graphics->Scale(-1, 1);
+
+        mHamsters[mHamsterIndex]->DrawPolygon(graphics, 0, 0, 0);
+    }
 
     graphics->PopState();
 }
@@ -299,6 +290,33 @@ void Hamster::Reset()
     }
 }
 
+/**
+ * Advance to the next hamster image
+ */
+void Hamster::SwitchHamsterImage()
+{
+    auto frame = GetMachine()->GetMachineTime();
+
+    if ( abs(mRotation)/frame > 0 )
+    {
+        //
+        // Move forward through the hamster image indices until we arrive at 3
+        //
+        if(mHamsterIndex == 1)
+            mCycleMode = Mode::Advance;
+
+        else if(mHamsterIndex == 3)
+            mCycleMode = Mode::Reverse;
+
+        //
+        // Set the current hamster image index based on the cycle mode
+        //
+        if(mCycleMode == Mode::Advance)
+            mHamsterIndex++;
+        else
+            mHamsterIndex--;
+    }
+}
 
 
 
