@@ -99,7 +99,6 @@ void Timeline::Load(wxXmlNode* root)
             XmlChannel(child);
         }
     }
-
 }
 
 

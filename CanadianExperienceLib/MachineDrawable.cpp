@@ -128,5 +128,49 @@ void MachineDrawable::Run()
 
     mMachineSystem->SetFrameRate(frameRate);
     mMachineSystem->SetMachineFrame(frame);
+}
 
+/**
+ * Save this machine drawable to an XML node
+ * @param node The node we are going to be a child of
+ * @return Allocated XML node
+ */
+wxXmlNode* MachineDrawable::XmlSave(wxXmlNode* node)
+{
+    wxString actorName = GetActor()->GetName();
+    auto frameRate = GetActor()->GetPicture()->GetTimeline()->GetFrameRate();
+    auto frame = frameRate * mMachineSystem->GetMachineTime();
+    auto machineNumber = mMachineSystem->GetMachineNumber();
+
+    auto itemNode = new wxXmlNode(wxXML_ELEMENT_NODE, actorName.Lower());
+    node->AddChild(itemNode);
+
+    //
+    // These are the state data necessary to reload a machine
+    //
+    itemNode->AddAttribute(L"number", wxString::Format(wxT("%i"), machineNumber));
+    itemNode->AddAttribute(L"frame", wxString::Format(wxT("%i"), frame));
+    itemNode->AddAttribute(L"frameRate", wxString::Format(wxT("%i"), frameRate));
+    itemNode->AddAttribute(L"running", wxString::Format(wxT("%i"), mRunning));
+
+    return itemNode;
+}
+
+/**
+* Load a machine from XML
+* @param root XML node to load from
+*/
+void MachineDrawable::XmlLoad(wxXmlNode* root)
+{
+    // Get the attributes of this machine
+    auto number = wxAtoi(root->GetAttribute(L"number", L"1"));
+    auto frame = wxAtoi(root->GetAttribute(L"frame", L"0"));
+    auto frameRate = wxAtoi(root->GetAttribute(L"framerate", L"30"));
+    auto running = root->GetAttribute(L"running", L"false");
+
+    mMachineSystem->SetMachineNumber(number);
+    mMachineSystem->SetMachineFrame(frame);
+    mMachineSystem->SetFrameRate(frameRate);
+
+    mRunning = (running == L"1");
 }

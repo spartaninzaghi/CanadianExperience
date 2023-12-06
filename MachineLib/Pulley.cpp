@@ -47,8 +47,6 @@ void Pulley::Update(double elapsed)
     {
         mSource.GetSink()->Rotate(mRotation, mSpeed);
     }
-
-
 }
 
 

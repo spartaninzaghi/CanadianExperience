@@ -89,14 +89,27 @@ public:
     virtual void DoDialog(wxWindow *parent) {}
 
     /**
-     * Wake up this drawable
+     * Activate this drawable
      */
     virtual void Wake() {}
 
     /**
-     * Make this drawable inactive
+     * Deactivate this drawable
      */
     virtual void Sleep() {}
+
+    /**
+     * Save this drawable to an XML node
+     * @param node The node we are going to be a child of
+     * @return Allocated XML node
+     */
+    virtual wxXmlNode* XmlSave(wxXmlNode* node) { return nullptr; }
+
+    /**
+    * Load this drawable from XML
+    * @param root XML node to load from
+    */
+    virtual void XmlLoad(wxXmlNode* node) {}
 
     /**
      * Test to see if we have been clicked on by the mouse

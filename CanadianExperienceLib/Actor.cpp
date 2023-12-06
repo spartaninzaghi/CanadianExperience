@@ -156,7 +156,7 @@ void Actor::DoDialog(wxFrame *parent)
 }
 
 /**
- * Make this actor active
+ * Activate the drawables in this actor
  */
 void Actor::Wake()
 {
@@ -167,7 +167,7 @@ void Actor::Wake()
 }
 
 /**
- * Make this actor inactive
+ * Deactivate the drawables in this actor
  */
 void Actor::Sleep()
 {
@@ -176,3 +176,30 @@ void Actor::Sleep()
         drawable->Sleep();
     }
 }
+
+/**
+ * Save this actor to an XML node
+ * @param node The node we are going to be a child of
+ * @return Allocated XML node
+ */
+void Actor::Save(wxXmlNode *root)
+{
+    for (auto drawable : mDrawablesInOrder)
+    {
+        drawable->XmlSave(root);
+    }
+}
+
+/**
+* Load this actor from XML
+* @param root XML node to load from
+*/
+void Actor::Load(wxXmlNode *root)
+{
+    for (auto drawable : mDrawablesInOrder)
+    {
+        drawable->XmlLoad(root);
+    }
+}
+
+

@@ -120,6 +120,10 @@ public:
     void SetKeyframe();
     void GetKeyframe();
 
+
+    void Save(wxXmlNode* root);
+    void Load(wxXmlNode* root);
+
     /**
      * The position animation channel
      * @return Pointer to animation channel

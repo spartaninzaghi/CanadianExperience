@@ -79,8 +79,6 @@ void MachineSystem::SetMachineFrame(int frame) {
         mMachine->Update(1.0 / mFrameRate);
     }
     mMachine->SetMachineFrame(mFrame);
-
-    // May need more than these, but you'll figure that out...
 }
 
 /**

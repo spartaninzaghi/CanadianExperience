@@ -34,8 +34,13 @@ public:
 
     MachineDrawable(const std::wstring &name, const std::wstring &resourcesDir);
 
+    void Run();
     void Wake() override;
     void Sleep() override;
+
+    wxXmlNode* XmlSave(wxXmlNode *node) override;
+    void XmlLoad(wxXmlNode *node) override;
+
     bool HitTest(wxPoint pos) override;
     wxPoint GetPosition() const override;
     void SetPosition(wxPoint pos) override;
@@ -54,7 +59,7 @@ public:
 
     /// Assignment operator
     void operator=(const MachineDrawable &) = delete;
-    void Run();
+
 };
 
 #endif //CANADIANEXPERIENCE_CANADIANEXPERIENCELIB_MACHINEDRAWABLE_H

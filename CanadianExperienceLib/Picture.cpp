@@ -120,6 +120,9 @@ void Picture::Save(const wxString& filename)
     // Save the timeline animation into the XML
     mTimeline.Save(root);
 
+    for (auto actor : mActors)
+        actor->Save(root);
+
     //
     // It is possible to add attributes to the root node here
     //
@@ -152,6 +155,32 @@ void Picture::Load(const wxString& filename)
 
     // Load the animation from the XML
     mTimeline.Load(root);
+
+    //
+    // Traverse the children of the root
+    // node of the XML document in memory!!!!
+    //
+    auto child = root->GetChildren();
+    for( ; child; child=child->GetNext())
+    {
+        auto name = child->GetName();
+        if (name == L"leftmachine")
+        {
+            for (auto actor : mActors)
+            {
+                if (actor->GetName() == L"LeftMachine")
+                    actor->Load(child);
+            }
+        }
+        else if (name == L"rightmachine")
+        {
+            for (auto actor : mActors)
+            {
+                if (actor->GetName() == L"RightMachine")
+                    actor->Load(child);
+            }
+        }
+    }
 
     //
     // It is possible to load attributes from the root node here
