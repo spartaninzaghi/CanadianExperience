@@ -1,6 +1,7 @@
 /**
  * @file PictureFactory.cpp
  * @author Charles Owen
+ * @author Mate Narh
  */
 
 #include "pch.h"
@@ -44,7 +45,7 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     // 2A Create Left Machine and Add It
     //
     auto leftMachineActor = std::make_shared<Actor>(L"LeftMachine");
-    leftMachineActor->SetPosition(wxPoint(350,420));
+    leftMachineActor->SetPosition(wxPoint(350,430));
     auto leftMachine = std::make_shared<MachineDrawable>(L"LeftMachine", resourcesDir);
     leftMachine->SetPosition(leftMachineActor->GetPosition());
     leftMachineActor->AddDrawable(leftMachine);
@@ -55,7 +56,7 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     // 2B Create Right Machine and Add It
     //
     auto rightMachineActor = std::make_shared<Actor>(L"RightMachine");
-    rightMachineActor->SetPosition(wxPoint(1150,420));
+    rightMachineActor->SetPosition(wxPoint(1150,430));
     auto rightMachine = std::make_shared<MachineDrawable>(L"RightMachine", resourcesDir);
     rightMachine->SetPosition(rightMachineActor->GetPosition());
     rightMachineActor->AddDrawable(rightMachine);
