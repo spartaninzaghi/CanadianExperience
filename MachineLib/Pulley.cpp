@@ -21,6 +21,8 @@ const double BeltRockAmount = 1;
 /// This is divided by the length to get the actual rate
 const double BeltRockBaseRate = M_PI * 1000;
 
+using wxP2DD = wxPoint2DDouble;
+
 /**
  * Constructor
  * @param radius The radius of this pulley
@@ -35,18 +37,26 @@ Pulley::Pulley(double radius)
 
 
 /**
+ * Reset this pulley if the current machine frame is 0
+ */
+void Pulley::Reset()
+{
+    mSpeed = 0;
+    mRotation = 0;
+}
+
+/**
  * Update the animation of this pulley
  * @param elapsed
  */
 void Pulley::Update(double elapsed)
 {
     //
-    // If Pulley is a source : update its sink to rotate at its speed
+    // If this pulley is a source :
+    // update its sink to rotate at its speed
     //
     if (GetSource() && mSource.GetSink())
-    {
         mSource.GetSink()->Rotate(mRotation, mSpeed);
-    }
 }
 
 
@@ -77,7 +87,7 @@ void Pulley::Rotate(double rotation, double speed)
     mSpeed =  speed;
 
     //
-    // The pulley ratio is 0 or False if this pulley is not being
+    // The pulley ratio is 0 (False) if this pulley is not being
     // driven by another pulley
     //
     // Bigger pulleys should rotate slower than smaller pulleys
@@ -126,29 +136,48 @@ void Pulley::DrawBelts(std::shared_ptr<wxGraphicsContext> graphics)
     graphics->SetPen(beltPen);
 
     //
-    // A source pulley will have a driven pulley
+    // A source pulley will have a driven pulley (non-null)
     //
     bool isSource = mDrivenPulley != nullptr;
 
     if (isSource)
     {
-        bool equalRadii = (mRadius == mDrivenPulley->mRadius);
+        //
+        // Belt Math for pulleys of the same radii or different radii
+        //
+        auto p1 = GetPosition();
+        auto p2 = mDrivenPulley->GetPosition();
+
+        auto r1 = mRadius;                 // Source radius
+        auto r2 = mDrivenPulley->mRadius;  // Sink radius
 
         //
-        // Draw pulleys of equal radius
+        // Compute beta
         //
-        if(equalRadii)
-        {
-            DrawSameRadiiBelts(graphics);
-        }
+        auto beta = ComputeBeta();
+
+        auto offset1  = BeltScale * wxPoint2DDouble( r1 * cos(beta), r1 * sin(beta) );
+        auto offset2  = BeltScale * wxPoint2DDouble( r2 * cos(beta), r2 * sin(beta) );
 
         //
-        // Draw pulleys of different radius
+        // Compute the actual positions of Belt #1 and Belt #2
         //
-        else
-        {
-            DrawDifferentRadiiBelts(graphics);
-        }
+        auto belt1P1 = p1 + offset1;
+        auto belt1P2 = p2 + offset2;
+
+        auto belt2P1 = p1 - offset1;
+        auto belt2P2 = p2 - offset2;
+
+        //
+        // Rock Belts
+        //
+        RockBelts((wxP2DD &)belt1P1, (wxP2DD &)belt1P2, (wxP2DD &)belt2P1, (wxP2DD &)belt2P2);
+
+        //
+        // Draw Belt #1 and Belt #2
+        //
+        graphics->StrokeLine(belt1P1.m_x, belt1P1.m_y, belt1P2.m_x, belt1P2.m_y);
+        graphics->StrokeLine(belt2P1.m_x, belt2P1.m_y, belt2P2.m_x, belt2P2.m_y);
     }
 }
 
@@ -240,58 +269,28 @@ double Pulley::ComputeBeta()
     // Compute beta
     //
     if (isPositiveRotation)
-    {
         beta = theta + phi + positiveRotationPhase;
-    }
+
     else
-    {
         beta = theta - phi + negativeRotationPhase;
-    }
 
     return beta;
 }
 
+
 /**
- * Draw belts over a driving pulley and driven pulley with equal radii
- * @param graphics The graphics context object to draw on
+ * Rock the belts that slot over a driven and a driving pulley
+ * @param belt1P1 The starting point of the 1st belt
+ * @param belt1P2 The ending point of the 1st belt
+ * @param belt2P1 The starting point of the 2nd belt
+ * @param belt2P2 The ending point of the 2nd belt
  */
-void Pulley::DrawSameRadiiBelts(std::shared_ptr<wxGraphicsContext> graphics)
+void Pulley::RockBelts(wxP2DD &belt1P1, wxP2DD &belt1P2, wxP2DD &belt2P1, wxP2DD &belt2P2)
 {
-    //
-    // Belt Math for pulleys of the equal radii
-    //
-    auto p1 = GetPosition();
-    auto p2 = mDrivenPulley->GetPosition();
-
-    //
-    // Compute the unit separation vector between the 2 pulleys
-    //
-    auto rHat = p2 - p1;
-    rHat.Normalize();
-
-    //
-    // Scale r_hat by the 90% the size of the driving pulley's radius
-    //
-    auto alpha = rHat * BeltScale * mRadius;
-
-    wxPoint2DDouble beta(-alpha.m_y, alpha.m_x);
-
-    //
-    // Compute the actual positions of Belt #1 and Belt #2
-    //
-    auto belt1P1 = p1 + beta;
-    auto belt1P2 = p2 + beta;
-
-    auto belt2P1 = p1 - beta;
-    auto belt2P2 = p2 - beta;
-
-    //
-    // Rock Belts
-    //
     auto beltLength = (belt1P2 - belt1P1).GetVectorLength();
     mBeltRockRate = BeltRockBaseRate / beltLength;
 
-    std::vector<wxPoint2DDouble> rocks;
+    std::vector<wxPoint2DDouble> rockAmounts;
 
     if ( mSpeed && (int)(mBeltRockRate * GetMachine()->GetMachineTime()) % int(mBeltRockRate) )
     {
@@ -299,88 +298,13 @@ void Pulley::DrawSameRadiiBelts(std::shared_ptr<wxGraphicsContext> graphics)
         {
             std::uniform_real_distribution<double> distribution(-BeltRockAmount, BeltRockAmount);
             auto rockAmount = wxPoint2DDouble(distribution(mRandom), distribution(mRandom));
-            rocks.push_back(rockAmount);
+            rockAmounts.push_back(rockAmount);
         }
-        belt1P1 += rocks[0];
-        belt1P2 += rocks[1];
-        belt2P1 += rocks[2];
-        belt2P2 += rocks[3];
+        belt1P1 += rockAmounts[0];
+        belt1P2 += rockAmounts[1];
+        belt2P1 += rockAmounts[2];
+        belt2P2 += rockAmounts[3];
     }
-
-    //
-    // Draw Belt #1 and Belt #2
-    //
-    graphics->StrokeLine(belt1P1.m_x, belt1P1.m_y, belt1P2.m_x, belt1P2.m_y);
-    graphics->StrokeLine(belt2P1.m_x, belt2P1.m_y, belt2P2.m_x, belt2P2.m_y);
-}
-
-/**
- * Draw belts over a driving pulley and driven pulley with different radii
- * @param graphics The graphics context object to draw on
- */
-void Pulley::DrawDifferentRadiiBelts(std::shared_ptr<wxGraphicsContext> graphics)
-{
-    //
-    // Belt Math for pulleys of the different radii
-    //
-    auto p1 = GetPosition();
-    auto p2 = mDrivenPulley->GetPosition();
-
-    auto r1 = mRadius;                 // Source radius
-    auto r2 = mDrivenPulley->mRadius;  // Sink radius
-
-    //
-    // Compute beta
-    //
-    auto beta = ComputeBeta();
-
-    auto offset1  = BeltScale * wxPoint2DDouble( r1 * cos(beta), r1 * sin(beta) );
-    auto offset2  = BeltScale * wxPoint2DDouble( r2 * cos(beta), r2 * sin(beta) );
-
-    //
-    // Compute the actual positions of Belt #1 and Belt #2
-    //
-    auto belt1P1 = p1 + offset1;
-    auto belt1P2 = p2 + offset2;
-
-    auto belt2P1 = p1 - offset1;
-    auto belt2P2 = p2 - offset2;
-
-    //
-    // Rock Belts
-    //
-    auto beltLength = (belt1P2 - belt1P1).GetVectorLength();
-    mBeltRockRate = BeltRockBaseRate / beltLength;
-
-    std::vector<wxPoint2DDouble> rocks;
-
-    if ( mSpeed && (int)(mBeltRockRate * GetMachine()->GetMachineTime()) % int(mBeltRockRate) )
-    {
-        for(int i = 0; i < 4; i++)
-        {
-            std::uniform_real_distribution<double> distribution(-BeltRockAmount, BeltRockAmount);
-            auto rockAmount = wxPoint2DDouble(distribution(mRandom), distribution(mRandom));
-            rocks.push_back(rockAmount);
-        }
-        belt1P1 += rocks[0];
-        belt1P2 += rocks[1];
-        belt2P1 += rocks[2];
-        belt2P2 += rocks[3];
-    }
-
-    //
-    // Draw Belt #1 and Belt #2
-    //
-    graphics->StrokeLine(belt1P1.m_x, belt1P1.m_y, belt1P2.m_x, belt1P2.m_y);
-    graphics->StrokeLine(belt2P1.m_x, belt2P1.m_y, belt2P2.m_x, belt2P2.m_y);
-}
-
-/**
- * Reset this pulley if the current machine frame is 0
- */
-void Pulley::Reset()
-{
-    mSpeed = 0;
 }
 
 

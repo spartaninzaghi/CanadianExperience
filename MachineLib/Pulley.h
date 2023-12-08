@@ -38,12 +38,6 @@ private:
     std::mt19937 mRandom;     ///< Random number generator for belt rock amount
     double mBeltRockRate = 1; ///< How quickly to rock pulley belts in cm/s
 
-    ///< Collection of amounts to rock pulley belts by horizontally & vertically
-    std::vector<wxPoint2DDouble> mBeltRockAmounts;
-
-    enum class Index {B1Start=0, B1End=1, B2Start=2, B2End=3};
-
-
 public:
 
     Pulley(double radius);
@@ -54,8 +48,8 @@ public:
     void Drive(std::shared_ptr<Pulley> drivenPulley);
     void Rotate(double rotation, double speed) override;
     void DrawBelts(std::shared_ptr<wxGraphicsContext> graphics);
-    void DrawSameRadiiBelts(std::shared_ptr<wxGraphicsContext> graphics);
-    void DrawDifferentRadiiBelts(std::shared_ptr<wxGraphicsContext> graphics);
+    void RockBelts(wxPoint2DDouble& belt1P1, wxPoint2DDouble& belt1P2,
+                   wxPoint2DDouble& belt2P1, wxPoint2DDouble& belt2P2);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
     void SetRotation(double rotation);

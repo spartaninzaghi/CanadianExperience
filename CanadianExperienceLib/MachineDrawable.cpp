@@ -77,10 +77,9 @@ double MachineDrawable::GetStartTime() const
 void MachineDrawable::DoDialog(wxWindow* parent)
 {
     MachineDialog machineDialog(parent, mMachineSystem);
+
     if (machineDialog.ShowModal() == wxID_OK)
-    {
         GetActor()->GetPicture()->UpdateObservers();
-    }
 }
 
 /**
