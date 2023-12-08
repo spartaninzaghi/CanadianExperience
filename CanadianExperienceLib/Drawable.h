@@ -103,13 +103,13 @@ public:
      * @param node The node we are going to be a child of
      * @return Allocated XML node
      */
-    virtual wxXmlNode* XmlSave(wxXmlNode* node) { return nullptr; }
+    virtual void XmlSave(wxXmlNode* node) {}
 
     /**
     * Load this drawable from XML
-    * @param root XML node to load from
+    * @param node XML node to load from
     */
-    virtual void XmlLoad(wxXmlNode* root) {}
+    virtual void XmlLoad(wxXmlNode* node) {}
 
     /**
      * Test to see if we have been clicked on by the mouse

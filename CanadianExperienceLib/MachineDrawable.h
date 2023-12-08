@@ -38,7 +38,7 @@ public:
     void Wake() override;
     void Sleep() override;
 
-    wxXmlNode* XmlSave(wxXmlNode *node) override;
+    void XmlSave(wxXmlNode *node) override;
     void XmlLoad(wxXmlNode *node) override;
 
     bool HitTest(wxPoint pos) override;
