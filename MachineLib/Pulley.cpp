@@ -7,6 +7,8 @@
 #include <cmath>
 #include "Pulley.h"
 
+/// Type definition for wxPoint2DDouble
+using wxP2DD = wxPoint2DDouble;
 
 /// The scale of the pulley belt. This tucks
 /// in the belts tightly behind the pulley
@@ -21,7 +23,6 @@ const double BeltRockAmount = 1;
 /// This is divided by the length to get the actual rate
 const double BeltRockBaseRate = M_PI * 1000;
 
-using wxP2DD = wxPoint2DDouble;
 
 /**
  * Constructor

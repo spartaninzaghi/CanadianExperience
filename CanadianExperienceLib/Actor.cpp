@@ -179,8 +179,7 @@ void Actor::Sleep()
 
 /**
  * Save this actor to an XML node
- * @param node The node we are going to be a child of
- * @return Allocated XML node
+ * @param root The node we are going to be a child of
  */
 void Actor::Save(wxXmlNode *root)
 {

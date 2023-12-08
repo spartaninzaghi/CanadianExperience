@@ -109,7 +109,7 @@ public:
     * Load this drawable from XML
     * @param root XML node to load from
     */
-    virtual void XmlLoad(wxXmlNode* node) {}
+    virtual void XmlLoad(wxXmlNode* root) {}
 
     /**
      * Test to see if we have been clicked on by the mouse
