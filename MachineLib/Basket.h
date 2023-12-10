@@ -27,7 +27,9 @@ private:
     cse335::PhysicsPolygon mRightSide; ///< The right side of the basket
 
     double mContactDuration = 0;       ///< How long a ball has been in this basket
-    bool mOccupied = false;            ///< Is a ball currently in this basket
+    bool mOccupied = false;            ///< Is a ball currently in this basket ?
+
+    wxPoint2DDouble mPosition = wxPoint2DDouble(0, 0); ///< The location of the basket
 
 public:
 

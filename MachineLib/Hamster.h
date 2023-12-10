@@ -36,8 +36,9 @@ private:
     cse335::Polygon mWheel;         ///< The wheel po for this hamster
     cse335::PhysicsPolygon mCage;   ///< The cage for this hamster
 
-    /// Order in which we cycle through this hamster's images
-    enum class Mode {Advance, Reverse};
+    wxPoint2DDouble mPosition = wxPoint2DDouble(0, 0); ///< The location of this hamster's cage
+
+    enum class Mode {Advance, Reverse}; ///< Order in which we cycle through this hamster's images
     Mode mCycleMode = Mode::Advance;    ///< The cycle mode for this hamster (default is forward)
 
     std::vector<std::shared_ptr<cse335::Polygon>> mHamsters; ///< Images of orientations for this hamster

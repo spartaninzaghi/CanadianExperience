@@ -100,7 +100,7 @@ void Basket::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     // Draw the image of the basket
     //
     auto rotation = 0; // Rotation is 0 because the basket doesn't turn
-    mBasket.DrawPolygon(graphics, GetPosition().m_x, GetPosition().m_y, rotation);
+    mBasket.DrawPolygon(graphics, mPosition.m_x, mPosition.m_y, rotation);
 }
 
 /**
@@ -126,7 +126,7 @@ void Basket::SetPosition(double x, double y)
     auto offset1 = 0.4 * BasketSize;
     auto offset2 = 5;
 
-    Component::SetPosition(x, y);
+    mPosition = wxPoint2DDouble(x, y);
 
     mBase.SetInitialPosition(x, y - offset1);
     mLeftSide.SetInitialPosition(x - offset1, y - offset2);

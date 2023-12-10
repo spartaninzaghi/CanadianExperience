@@ -162,9 +162,8 @@ void Hamster::InstallPhysics(std::shared_ptr<b2World> world)
  */
 void Hamster::SetPosition(double x, double y)
 {
-    Component::SetPosition(x, y); // This upcall sets the position of the cage
-
-    mWheelPosition = GetPosition() + WheelCenter;
+    mPosition = wxPoint2DDouble(x, y);
+    mWheelPosition = mPosition + WheelCenter;
     mCage.SetInitialPosition(x, y);
 }
 
@@ -174,9 +173,8 @@ void Hamster::SetPosition(double x, double y)
  */
 void Hamster::SetPosition(wxPoint2DDouble position)
 {
-    Component::SetPosition(position); // This upcall sets the position of the cage
-
-    mWheelPosition = GetPosition() + WheelCenter;
+    mPosition = position;
+    mWheelPosition = mPosition + WheelCenter;
     mCage.SetInitialPosition(position.m_x, position.m_y);
 }
 
@@ -200,7 +198,7 @@ void Hamster::SetInitiallyRunning(bool running)
  */
 wxPoint2DDouble Hamster::GetShaftPosition() const
 {
-    return GetPosition() + HamsterShaftOffset;
+    return mPosition + HamsterShaftOffset;
 }
 
 /**

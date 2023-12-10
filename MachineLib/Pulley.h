@@ -33,7 +33,8 @@ private:
     RotationSource mSource;  ///< Rotation source for this pulley (if it is "driving")
     cse335::Polygon mPulley; ///< The polygon for this pulley
 
-    std::shared_ptr<Pulley> mDrivenPulley = nullptr; ///< The pulley being driven by this pulley
+    wxPoint2DDouble mPosition = wxPoint2DDouble(0, 0); ///< The location of this pulley (relative to its center)
+    std::shared_ptr<Pulley> mDrivenPulley = nullptr;   ///< The sink pulley being driven by this source pulley
 
     std::mt19937 mRandom;     ///< Random number generator for belt rock amount
     double mBeltRockRate = 1; ///< How quickly to rock pulley belts in cm/s
@@ -54,6 +55,8 @@ public:
 
     void SetRotation(double rotation);
     void SetImage(const std::wstring &imagesDir);
+    void SetPosition(double x, double y) override;
+    void SetPosition(wxPoint2DDouble position) override;
 
     RotationSink *GetSink();
     double GetRotation() const;

@@ -75,7 +75,7 @@ void Pulley::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     //
     // Draw the pulley
     //
-    mPulley.DrawPolygon(graphics, GetPosition().m_x, GetPosition().m_y, mRotation);
+    mPulley.DrawPolygon(graphics, mPosition.m_x, mPosition.m_y, mRotation);
 }
 
 /**
@@ -146,8 +146,8 @@ void Pulley::DrawBelts(std::shared_ptr<wxGraphicsContext> graphics)
         //
         // Belt Math for pulleys of the same radii or different radii
         //
-        auto p1 = GetPosition();
-        auto p2 = mDrivenPulley->GetPosition();
+        auto p1 = mPosition;
+        auto p2 = mDrivenPulley->mPosition;
 
         auto r1 = mRadius;                 // Source radius
         auto r2 = mDrivenPulley->mRadius;  // Sink radius
@@ -242,8 +242,8 @@ double Pulley::ComputeBeta()
     //
     bool isPositiveRotation = mSpeed < 0;
 
-    auto p1 = GetPosition();                // P1(x1, y1) : Source center
-    auto p2 = mDrivenPulley->GetPosition(); // P2(x2, y2) : Sink center
+    auto p1 = mPosition;                // P1(x1, y1) : Source center
+    auto p2 = mDrivenPulley->mPosition; // P2(x2, y2) : Sink center
 
     auto r1 = mRadius;                      // Source radius
     auto r2 = mDrivenPulley->mRadius;       // Sink radius
@@ -307,6 +307,27 @@ void Pulley::RockBelts(wxP2DD &belt1P1, wxP2DD &belt1P2, wxP2DD &belt2P1, wxP2DD
         belt2P2 += rockAmounts[3];
     }
 }
+
+/**
+ * Set the position of this component given an x and y value
+ * @param x The new x coordinate in pixels
+ * @param y The new y coordinate in pixels
+ */
+void Pulley::SetPosition(double x, double y)
+{
+    mPosition = wxPoint2DDouble(x, y);
+}
+
+/**
+ * Set the position of this component given a point
+ * @param position The point position
+ */
+void Pulley::SetPosition(wxPoint2DDouble position)
+{
+   mPosition = position;
+}
+
+
 
 
 

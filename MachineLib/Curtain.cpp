@@ -178,19 +178,19 @@ void Curtain::ResetCurtainState()
     }
 
     //
-    // Open the curtains by reducing the horizontal scale, dragging them apart
+    // 1 Open the curtains by reducing the horizontal scale, dragging them apart
     //
     if ( mState == State::Open )
         mXScale -= ScaleReduction;
 
     //
-    // Close the curtains by increasing the horizontal cale, pulling them together
+    // 2 Close the curtains by increasing the horizontal cale, pulling them together
     //
     else if ( mState == State::Close)
         mXScale += ScaleReduction;
 
     //
-    // If the curtain is stationary, restore or cap its scaling
+    // 3 If the curtain is stationary, restore or cap its scaling
     //
     else if ( mState == State::Stationary )
     {

@@ -18,14 +18,8 @@
 class Component
 {
 private:
-    /// The location of this component
-    wxPoint2DDouble mPosition = wxPoint2DDouble(0.0, 0.0);
-
     /// The machine that this component belongs to
     Machine* mMachine = nullptr;
-
-    /// The current time of this component
-    double mCurrentTime = 0.0;
 
 protected:
     /// Default constructor
@@ -38,7 +32,7 @@ public:
     /**
      * Reset this component
      */
-    virtual void Reset() { mCurrentTime = 0; }
+    virtual void Reset() {}
 
     /**
      * Rotate this component
@@ -57,13 +51,13 @@ public:
      * Update the time of this component
      * @param elapsed The time elapsed
      */
-    virtual void Update(double elapsed) { mCurrentTime += elapsed; }
+    virtual void Update(double elapsed) {}
 
     /**
      * Get the current time of this component
      * @return The current time of this component
      */
-    double GetCurrentTime() const { return mCurrentTime; }
+    double GetCurrentTime() const { return 0; }
 
     /**
      * Install this component into the physics system of its machine
@@ -76,19 +70,19 @@ public:
      * @param x The new x coordinate in pixels
      * @param y The new y coordinate in pixels
      */
-    virtual void SetPosition(double x, double y) { mPosition = wxPoint2DDouble(x, y); }
+    virtual void SetPosition(double x, double y) {}
 
     /**
      * Set the position of this component given a point
      * @param position The point position
      */
-    virtual void SetPosition(wxPoint2DDouble position) { mPosition = position; }
+    virtual void SetPosition(wxPoint2DDouble position) {}
 
     /**
      * Get the position of this component
      * @return The (x, y) position of this component in pixels
      */
-    virtual wxPoint2DDouble GetPosition() const { return mPosition; }
+    virtual wxPoint2DDouble GetPosition() const { return wxPoint2DDouble(0, 0); }
 
     /**
      * Set the machine this component belongs to

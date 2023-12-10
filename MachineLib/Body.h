@@ -18,11 +18,11 @@
 class Body : public Component
 {
 private:
-    /// The rotation sink for this body
-    RotationSink mSink;
 
-    /// The physics polygon that defines this body
-    cse335::PhysicsPolygon mBody;
+    RotationSink mSink; /// The rotation sink for this body
+
+
+    cse335::PhysicsPolygon mBody; /// The physics polygon that defines this body
 
     /// Default number of steps when drawing a circle
     static const int DefaultCircleSteps = 32;
