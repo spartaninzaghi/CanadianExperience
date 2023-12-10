@@ -14,6 +14,7 @@
 #include "Actor.h"
 #include "Drawable.h"
 #include "ViewEdit.h"
+#include "StartTimeDlg.h"
 
 /// A scaling factor, converts mouse motion to rotation in radians
 const double RotationScaling = 0.02;
@@ -36,6 +37,18 @@ ViewEdit::ViewEdit(wxFrame* parent) :wxScrolledCanvas(parent, wxID_ANY)
     parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &ViewEdit::OnEditRotate, this, XRCID("EditRotate"));
     parent->Bind(wxEVT_UPDATE_UI, &ViewEdit::OnUpdateEditMove, this, XRCID("EditMove"));
     parent->Bind(wxEVT_UPDATE_UI, &ViewEdit::OnUpdateEditRotate, this, XRCID("EditRotate"));
+
+    parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &ViewEdit::OnEditLeftMachineNumber, this, XRCID("EditLeftMachineNumber"));
+    parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &ViewEdit::OnEditRightMachineNumber, this, XRCID("EditRightMachineNumber"));
+
+    parent->Bind(wxEVT_COMMAND_MENU_SELECTED,
+                 &ViewEdit::OnEditLeftMachineStartTime, this,
+                 XRCID("EditLeftMachineStartTime"));
+
+    parent->Bind(wxEVT_COMMAND_MENU_SELECTED,
+                 &ViewEdit::OnEditRightMachineStartTime, this,
+                 XRCID("EditRightMachineStartTime"));
+
 }
 
 /**
@@ -212,5 +225,41 @@ void ViewEdit::OnUpdateEditMove(wxUpdateUIEvent& event)
 void ViewEdit::OnUpdateEditRotate(wxUpdateUIEvent& event)
 {
     event.Check(mMode == Mode::Rotate);
+}
+
+/**
+ * Edit the start time of the machine on the left of the screen
+ * @param event The event we update
+ */
+void ViewEdit::OnEditLeftMachineStartTime(wxCommandEvent &event)
+{
+    GetPicture()->EditLeftMachineStartTime();
+}
+
+/**
+ * Edit the start time of the machine on the left of the screen
+ * @param event The event we update
+ */
+void ViewEdit::OnEditRightMachineStartTime(wxCommandEvent &event)
+{
+    GetPicture()->EditRightMachineStartTime();
+}
+
+/**
+ * Edit the machine number of the left machine
+ * @param event The event we update
+ */
+void ViewEdit::OnEditLeftMachineNumber(wxCommandEvent &event)
+{
+    GetPicture()->EditLeftMachineNumber();
+}
+
+/**
+ * Edit the machine number of the machine on the right of the screen
+ * @param event The event we update
+ */
+void ViewEdit::OnEditRightMachineNumber(wxCommandEvent &event)
+{
+    GetPicture()->EditRightMachineNumber();
 }
 

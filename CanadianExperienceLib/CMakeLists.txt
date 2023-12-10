@@ -23,6 +23,8 @@ set(SOURCE_FILES
         AnimChannelPoint.cpp AnimChannelPoint.h
         MachineDrawable.cpp
         MachineDrawable.h
+        StartTimeDlg.cpp
+        StartTimeDlg.h
 )
 
 find_package(wxWidgets COMPONENTS core base xrc html xml REQUIRED)

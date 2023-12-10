@@ -50,21 +50,21 @@
 					<help></help>
 				</object>
 				<object class="separator" />
-				<object class="wxMenuItem" name="EditLeftMachine">
-					<label>Edit Left Machine</label>
+				<object class="wxMenuItem" name="EditLeftMachineNumber">
+					<label>Edit Left Machine Number</label>
 					<help></help>
 				</object>
-				<object class="wxMenuItem" name="EditRightMachine">
-					<label>Edit Right Machine</label>
+				<object class="wxMenuItem" name="EditRightMachineNumber">
+					<label>Edit Right Machine Number</label>
 					<help></help>
 				</object>
 				<object class="separator" />
-				<object class="wxMenuItem" name="EditRunLeftMachine">
-					<label>Run Left Machine</label>
+				<object class="wxMenuItem" name="EditLeftMachineStartTime">
+					<label>Edit Left Machine Start Time</label>
 					<help></help>
 				</object>
-				<object class="wxMenuItem" name="EditRunRightMachine">
-					<label>Run Right Machine</label>
+				<object class="wxMenuItem" name="EditRightMachineStartTime">
+					<label>Edit Right Machine Start Time</label>
 					<help></help>
 				</object>
 			</object>
@@ -214,6 +214,64 @@
 						<flag>wxALL|wxEXPAND</flag>
 						<border>5</border>
 						<object class="wxTextCtrl" name="TimelineDlgFrameRate">
+							<value></value>
+						</object>
+					</object>
+				</object>
+			</object>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxStdDialogButtonSizer">
+					<object class="button">
+						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+						<border>5</border>
+						<object class="wxButton" name="wxID_OK">
+							<label>&amp;OK</label>
+						</object>
+					</object>
+					<object class="button">
+						<flag>wxALIGN_CENTER_HORIZONTAL|wxALL</flag>
+						<border>5</border>
+						<object class="wxButton" name="wxID_CANCEL">
+							<label>&amp;Cancel</label>
+						</object>
+					</object>
+				</object>
+			</object>
+		</object>
+	</object>
+	<object class="wxDialog" name="StartTimeDlg">
+		<style>wxDEFAULT_DIALOG_STYLE</style>
+		<size>251,160</size>
+		<title>Start Time</title>
+		<centered>1</centered>
+		<object class="wxBoxSizer">
+			<orient>wxVERTICAL</orient>
+			<object class="sizeritem">
+				<option>1</option>
+				<flag>wxEXPAND</flag>
+				<border>5</border>
+				<object class="wxGridSizer">
+					<rows>2</rows>
+					<cols>2</cols>
+					<vgap>0</vgap>
+					<hgap>0</hgap>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxALL</flag>
+						<border>5</border>
+						<object class="wxStaticText" name="m_staticText4">
+							<label>Start Time</label>
+							<wrap>-1</wrap>
+						</object>
+					</object>
+					<object class="sizeritem">
+						<option>0</option>
+						<flag>wxALIGN_CENTER_VERTICAL|wxALL</flag>
+						<border>5</border>
+						<object class="wxTextCtrl" name="StartTimeDlgStartTime">
 							<value></value>
 						</object>
 					</object>

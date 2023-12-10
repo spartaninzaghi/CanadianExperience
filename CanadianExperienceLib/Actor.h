@@ -113,8 +113,12 @@ public:
      */
     Picture *GetPicture() { return mPicture; }
 
-    void Wake();
-    void Sleep();
+    /**
+     * Get the root drawable for this actor
+     * @return the root drawable for this actor
+     */
+    std::shared_ptr<Drawable> GetRoot() const { return mRoot; }
+
     void DoDialog(wxFrame *parent);
 
     void SetKeyframe();

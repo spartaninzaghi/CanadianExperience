@@ -17,6 +17,12 @@
 /// Directory within resources that contains the images.
 const std::wstring ImagesDirectory = L"/images";
 
+/// The start time for the machine on the left of the screen
+const double LeftMachineStartTime = 0;
+
+/// The start time for the machine on the right of the screen
+const double RightMachineStartTime = 3;
+
 
 /**
  * Factory method to create a new picture.
@@ -48,6 +54,7 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     leftMachineActor->SetPosition(wxPoint(350,430));
     auto leftMachine = std::make_shared<MachineDrawable>(L"LeftMachine", resourcesDir);
     leftMachine->SetPosition(leftMachineActor->GetPosition());
+    leftMachine->SetStartTime(LeftMachineStartTime);
     leftMachineActor->AddDrawable(leftMachine);
     leftMachineActor->SetRoot(leftMachine);
     picture->AddActor(leftMachineActor);
@@ -59,6 +66,7 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     rightMachineActor->SetPosition(wxPoint(1150,430));
     auto rightMachine = std::make_shared<MachineDrawable>(L"RightMachine", resourcesDir);
     rightMachine->SetPosition(rightMachineActor->GetPosition());
+    leftMachine->SetStartTime(RightMachineStartTime);
     rightMachineActor->AddDrawable(rightMachine);
     rightMachineActor->SetRoot(rightMachine);
     picture->AddActor(rightMachineActor);

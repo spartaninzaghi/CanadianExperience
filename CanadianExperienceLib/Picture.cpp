@@ -11,7 +11,7 @@
 #include "Picture.h"
 #include "PictureObserver.h"
 #include "Actor.h"
-
+#include "StartTimeDlg.h"
 
 /**
  * Constructor
@@ -191,23 +191,20 @@ void Picture::Load(const wxString& filename)
     UpdateObservers();
 }
 
-
+/**
+ * Set the parent wxFrame for this picture
+ * @param parent The new parent
+ */
 void Picture::SetParent(wxFrame *parent)
 {
     mParent = parent;
-
-    parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &Picture::OnEditLeftMachine, this, XRCID("EditLeftMachine"));
-    parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &Picture::OnEditRightMachine, this, XRCID("EditRightMachine"));
-    parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &Picture::OnEditRunLeftMachine, this, XRCID("EditRunLeftMachine"));
-    parent->Bind(wxEVT_COMMAND_MENU_SELECTED, &Picture::OnEditRunRightMachine, this, XRCID("EditRunRightMachine"));
-
 }
 
 /**
  * Edit the machine on the left of the window
  * @param event The menu event
  */
-void Picture::OnEditLeftMachine(wxCommandEvent &event)
+void Picture::EditLeftMachineNumber()
 {
     for (auto actor : mActors)
         if (actor->GetName() == L"LeftMachine")
@@ -218,41 +215,41 @@ void Picture::OnEditLeftMachine(wxCommandEvent &event)
  * Edit the machine on the right of the window
  * @param event The menu event
  */
-void Picture::OnEditRightMachine(wxCommandEvent &event)
+void Picture::EditRightMachineNumber()
 {
     for (auto actor : mActors)
-        if (actor->GetName() == L"RightMachine")
+        if(actor->GetName() == L"RightMachine")
             actor->DoDialog(mParent);
 }
 
 /**
- * Run the machine on the left of the window at start
- * @param event The menu event
+ * Edit the start time of the machine on the left of the screen
  */
-void Picture::OnEditRunLeftMachine(wxCommandEvent &event)
+void Picture::EditLeftMachineStartTime()
 {
     for (auto actor : mActors)
     {
-        if (actor->GetName() == L"LeftMachine")
-            actor->Wake();
-
-        if (actor->GetName() == L"RightMachine")
-            actor->Sleep();
+        if(actor->GetName() == L"LeftMachine")
+        {
+            StartTimeDlg dlg(mParent, actor->GetRoot());
+            if(dlg.ShowModal() == wxID_OK)
+                UpdateObservers();
+        }
     }
 }
 
 /**
- * Run the machine on the right of the window at start
- * @param event The menu event
+ * Edit the start time of the machine on the right of the screen
  */
-void Picture::OnEditRunRightMachine(wxCommandEvent &event)
+void Picture::EditRightMachineStartTime()
 {
     for (auto actor : mActors)
     {
-        if (actor->GetName() == L"RightMachine")
-            actor->Wake();
-
-        if (actor->GetName() == L"LeftMachine")
-            actor->Sleep();
+        if(actor->GetName() == L"RightMachine")
+        {
+            StartTimeDlg dlg(mParent, actor->GetRoot());
+            if(dlg.ShowModal() == wxID_OK)
+                UpdateObservers();
+        }
     }
 }

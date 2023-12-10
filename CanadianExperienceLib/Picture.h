@@ -65,11 +65,13 @@ public:
      */
     Timeline *GetTimeline() {return &mTimeline;}
 
-    /**
-     * Set the parent wxFrame for this picture
-     * @param parent The new parent
-     */
     void SetParent(wxFrame *parent);
+
+    /**
+     * Get the parent wxFrame for this picture
+     * @return The parent wxFrame for this picture
+     */
+    wxFrame *GetParent() const { return mParent; }
 
     void AddObserver(PictureObserver *observer);
     void RemoveObserver(PictureObserver *observer);
@@ -139,9 +141,10 @@ public:
 
     void Save(const wxString& filename);
 
-    void OnEditRunLeftMachine(wxCommandEvent& event);
-    void OnEditRunRightMachine(wxCommandEvent& event);
-    void OnEditLeftMachine(wxCommandEvent& event);
-    void OnEditRightMachine(wxCommandEvent& event);
+    void EditLeftMachineNumber();
+    void EditRightMachineNumber();
+
+    void EditLeftMachineStartTime();
+    void EditRightMachineStartTime();
 };
 

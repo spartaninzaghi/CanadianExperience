@@ -23,10 +23,6 @@ private:
     /// The start time for the machine
     double mStartTime = 0;
 
-    /// Is the machine encapsulated in this drawable running
-    /// at the start of Canadian Experience ?
-    bool mRunning = false;
-
     /// The system for this drawable's machine
     std::shared_ptr<IMachineSystem> mMachineSystem;
 
@@ -35,21 +31,17 @@ public:
     MachineDrawable(const std::wstring &name, const std::wstring &resourcesDir);
 
     void Run();
-    void Wake() override;
-    void Sleep() override;
-
+    bool HitTest(wxPoint pos) override;
     void XmlSave(wxXmlNode *node) override;
     void XmlLoad(wxXmlNode *node) override;
-
-    bool HitTest(wxPoint pos) override;
-    wxPoint GetPosition() const override;
-    void SetPosition(wxPoint pos) override;
     void DoDialog(wxWindow *parent) override;
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
-    void SetStartTime(double time);
+    void SetPosition(wxPoint pos) override;
+    void SetStartTime(double time) override;
 
-    double GetStartTime() const;
+    double GetStartTime() const override;
+    wxPoint GetPosition() const override;
 
     /// Default constructor (disabled)
     MachineDrawable() = delete;

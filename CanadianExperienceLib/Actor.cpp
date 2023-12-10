@@ -149,32 +149,8 @@ void Actor::GetKeyframe()
  */
 void Actor::DoDialog(wxFrame *parent)
 {
-    for (auto drawable : mDrawablesInOrder)
-    {
-        drawable->DoDialog(parent);
-    }
-}
-
-/**
- * Activate the drawables in this actor
- */
-void Actor::Wake()
-{
-    for (auto drawable : mDrawablesInOrder)
-    {
-        drawable->Wake();
-    }
-}
-
-/**
- * Deactivate the drawables in this actor
- */
-void Actor::Sleep()
-{
-    for (auto drawable : mDrawablesInOrder)
-    {
-        drawable->Sleep();
-    }
+    if (mRoot)
+        mRoot->DoDialog(parent);
 }
 
 /**
@@ -183,10 +159,8 @@ void Actor::Sleep()
  */
 void Actor::Save(wxXmlNode *root)
 {
-    for (auto drawable : mDrawablesInOrder)
-    {
-        drawable->XmlSave(root);
-    }
+    if (mRoot)
+        mRoot->XmlSave(root);
 }
 
 /**
@@ -195,10 +169,8 @@ void Actor::Save(wxXmlNode *root)
 */
 void Actor::Load(wxXmlNode *root)
 {
-    for (auto drawable : mDrawablesInOrder)
-    {
-        drawable->XmlLoad(root);
-    }
+    if (mRoot)
+        mRoot->XmlLoad(root);
 }
 
 

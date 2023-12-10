@@ -33,6 +33,11 @@ private:
     void OnUpdateEditMove(wxUpdateUIEvent& event);
     void OnUpdateEditRotate(wxUpdateUIEvent& event);
 
+    void OnEditLeftMachineNumber(wxCommandEvent& event);
+    void OnEditRightMachineNumber(wxCommandEvent& event);
+    void OnEditLeftMachineStartTime(wxCommandEvent& event);
+    void OnEditRightMachineStartTime(wxCommandEvent& event);
+
     /// The last mouse position
     wxPoint mLastMouse = wxPoint(0, 0);
 
@@ -53,7 +58,6 @@ public:
     ViewEdit(wxFrame* parent);
 
     void UpdateObserver() override;
-
 
 };
 
