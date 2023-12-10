@@ -36,12 +36,11 @@ public:
     Basket(const std::wstring &imagesDir);
 
     void Reset() override;
-    void BeginContact(b2Contact *contact);
-    void PreSolve(b2Contact *contact, const b2Manifold *oldManifold);
-    void Draw(std::shared_ptr<wxGraphicsContext> graphics);
-    void InstallPhysics(std::shared_ptr<b2World> world) override;
-    void SetPosition(double x, double y) override;
     void Update(double elapsed) override;
+    void BeginContact(b2Contact *contact);
+    void SetPosition(double x, double y) override;
+    void InstallPhysics(std::shared_ptr<b2World> world) override;
+    void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
 
     /// Default constructor (disabled)
     Basket() = delete;

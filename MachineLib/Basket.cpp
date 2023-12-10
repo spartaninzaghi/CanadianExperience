@@ -58,17 +58,6 @@ void Basket::BeginContact(b2Contact *contact)
 }
 
 /**
- * Handle before the solution of a contact with the
- * base and sides of the basket
- * @param contact Contact object
- * @param oldManifold Manifold object
- */
-void Basket::PreSolve(b2Contact *contact, const b2Manifold *oldManifold)
-{
-
-}
-
-/**
  * Update the time of this basket
  * @param elapsed The new time
  */
@@ -84,8 +73,7 @@ void Basket::Update(double elapsed)
 
             ball->ApplyLinearImpulseToCenter(BasketImpulse, true);
 
-            mOccupied = false;
-            mContactDuration = 0;
+            Reset();
         }
     }
 }
