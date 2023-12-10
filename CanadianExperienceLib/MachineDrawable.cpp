@@ -117,22 +117,20 @@ void MachineDrawable::Run()
  */
 void MachineDrawable::XmlSave(wxXmlNode* node)
 {
-    wxString actorName = GetActor()->GetName();
-    int frameRate = GetActor()->GetPicture()->GetTimeline()->GetFrameRate();
-    int machineNumber = mMachineSystem->GetMachineNumber();
-
     //
     // Create a new <machineActorName> item node and append it to the root
     //
+    wxString actorName = GetActor()->GetName();
     auto itemNode = new wxXmlNode(wxXML_ELEMENT_NODE, actorName.Lower());
     node->AddChild(itemNode);
+
+    int machineNumber = mMachineSystem->GetMachineNumber();
 
     //
     // Add attributes for the state data necessary to reload a machine
     //
     itemNode->AddAttribute(L"number", wxString::Format(wxT("%i"), machineNumber));
     itemNode->AddAttribute(L"start-time", wxString::Format(wxT("%f"), mStartTime));
-    itemNode->AddAttribute(L"framerate", wxString::Format(wxT("%i"), frameRate));
 }
 
 /**
@@ -142,16 +140,9 @@ void MachineDrawable::XmlSave(wxXmlNode* node)
 void MachineDrawable::XmlLoad(wxXmlNode* node)
 {
     //
-    // Get the attributes of this machine
-    //
-    int number = wxAtoi(node->GetAttribute(L"number", L"1"));
-    mStartTime = wxAtof(node->GetAttribute(L"start-time", L"0"));
-    int frameRate = wxAtoi(node->GetAttribute(L"framerate", L"30"));
-
-    //
     // Set the state of the machine using these attributes
     //
-    mMachineSystem->SetMachineNumber(number);
-    mMachineSystem->SetFrameRate(frameRate);
+    mStartTime = wxAtof(node->GetAttribute(L"start-time", L"0"));
+    mMachineSystem->SetMachineNumber(wxAtoi(node->GetAttribute(L"number", L"1")));
 }
 
