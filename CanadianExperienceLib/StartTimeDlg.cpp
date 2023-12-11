@@ -13,7 +13,7 @@
 /**
  * Constructor
  * @param parent the parent window to display the dialog box in
- * @param machineDrawable the machine drawable whose start time is edited
+ * @param drawable the machine drawable whose start time is edited
  */
 StartTimeDlg::StartTimeDlg(wxWindow *parent, std::shared_ptr <Drawable> drawable)
     : mDrawable(drawable)

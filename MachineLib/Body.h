@@ -19,13 +19,8 @@ class Body : public Component
 {
 private:
 
-    RotationSink mSink; /// The rotation sink for this body
-
-
-    cse335::PhysicsPolygon mBody; /// The physics polygon that defines this body
-
-    /// Default number of steps when drawing a circle
-    static const int DefaultCircleSteps = 32;
+    RotationSink mSink;           ///< The rotation sink for this body
+    cse335::PhysicsPolygon mBody; ///< The physics polygon that defines this body
 
 public:
 
@@ -45,7 +40,7 @@ public:
     void AddPoint(double x, double y);
     void Update(double elapsed) override;
     void Rotate(double rotation, double speed) override;
-    void Circle(double radius, int steps=DefaultCircleSteps);
+    void Circle(double radius, int steps=32);
     void BottomCenteredRectangle(double width, double height);
     void Rectangle(double x, double y, double width, double height);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;

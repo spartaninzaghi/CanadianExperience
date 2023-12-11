@@ -22,32 +22,39 @@ class Hamster : public Component, public b2ContactListener
 {
 private:
 
-    double mSpeed = 1;              ///< The hamster speed (1 clockwise rotation per second default)
-    int mFrameRate = 30;             ///< The frame rate for this hamster
-    int mHamsterIndex = 0;          ///< The hamster image index (0 default for sleeping hamster)
-    double mRotation = 0.0;         ///< The rotation of this hamster
+    double mSpeed = 1;           ///< The hamster speed (1 clockwise rotation per second default)
+    double mRuntime = 0;         ///< How much animation time has passed since last hamster cycle
+    double mRotation = 0;        ///< The rotation of this hamster in turns
+    int mHamsterIndex = 0;       ///< The hamster image index (0 default for sleeping hamster)
+    double mCyclePeriod = 0.25;  ///< Number of seconds it takes to switch b/n two hamster images
 
     RotationSource mSource;         ///< The rotation source for this hamster
-    wxPoint2DDouble mWheelPosition; ///< The position of the hamster cage
+    wxPoint2DDouble mWheelPosition; ///< The position of this hamster's wheel
 
     bool mRunning = false;          ///< Is this hamster running right now ?
     bool mInitiallyRunning = false; ///< Is this hamster running when system starts ?
 
-    cse335::Polygon mWheel;         ///< The wheel po for this hamster
+
+    cse335::Polygon mWheel;         ///< The wheel for this hamster
     cse335::PhysicsPolygon mCage;   ///< The cage for this hamster
 
-    wxPoint2DDouble mPosition = wxPoint2DDouble(0, 0); ///< The location of this hamster's cage
+    wxPoint2DDouble mPosition = wxPoint2DDouble(0, 0); ///< The position of this hamster's cage
 
-    enum class Mode {Advance, Reverse}; ///< Order in which we cycle through this hamster's images
-    Mode mCycleMode = Mode::Advance;    ///< The cycle mode for this hamster (default is forward)
+    /// Direction in which we cycle through this hamster's images
+    enum class Mode {Advance, Reverse};
 
-    std::vector<std::shared_ptr<cse335::Polygon>> mHamsters; ///< Images of orientations for this hamster
+    /// The cycle mode for this hamster (default is forward)
+    Mode mCycleMode = Mode::Advance;
+
+    /// Images of orientations for this hamster
+    std::vector<std::shared_ptr<cse335::Polygon>> mHamsters;
 
 public:
 
     Hamster(const std::wstring &imagesDir);
 
     void Reset() override;
+    void SwitchHamsterImage();
     void Update(double elapsed) override;
     void BeginContact(b2Contact *contact);
     void Draw(std::shared_ptr<wxGraphicsContext> graphics) override;
@@ -67,6 +74,8 @@ public:
     void SetPosition(double x, double y) override;
     void SetPosition(wxPoint2DDouble position) override;
 
+    /// Default constructor (disabled)
+    Hamster() = delete;
 
     /// Copy constructor (disabled)
     Hamster(const Hamster &) = delete;
@@ -74,7 +83,6 @@ public:
     /// Assignment operator
     void operator=(const Hamster &) = delete;
 
-    void SwitchHamsterImage();
 };
 
 #endif //CANADIANEXPERIENCE_MACHINELIB_HAMSTER_H

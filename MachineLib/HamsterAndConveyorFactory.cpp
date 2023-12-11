@@ -31,14 +31,14 @@ void HamsterAndConveyorFactory::Create(wxPoint2DDouble hamsterPosition, wxPoint2
     auto conveyorShaft = conveyor->GetShaftPosition();
 
     // The pulley driven by the hamster
-    auto pulley1 = std::make_shared<Pulley>(10);
+    auto pulley1 = std::make_shared<Pulley>(10, mRock);
     pulley1->SetImage(mImagesDir + L"/pulley3.png");
     pulley1->SetPosition(hamsterShaft);
     mMachine->AddComponent(pulley1);
 
     hamster->GetSource()->AddSink(pulley1);
 
-    auto pulley2 = std::make_shared<Pulley>(30); // Changed from 10 -> 20
+    auto pulley2 = std::make_shared<Pulley>(mPulley2Raduis, mRock);
     pulley2->SetImage(mImagesDir + L"/pulley3.png");
     pulley2->SetPosition(conveyorShaft);
     mMachine->AddComponent(pulley2);

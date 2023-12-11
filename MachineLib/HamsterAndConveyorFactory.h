@@ -49,14 +49,24 @@ private:
     /// The conveyor
     std::shared_ptr<Conveyor> mConveyor;
 
+    /// The radius of the second pulley
+    double mPulley2Raduis = 10;
+
+    /// Should this pulley set-up have flapping belts
+    bool mRock = false;
+
 public:
+
     /**
      * Constructor
      * @param machine The Machine to add the components to
      * @param imagesDir Directory containing the images
+     * @param pulley2Radius Radius of second pulley
+     * @param rock Flap pulley belts if true
      */
-    HamsterAndConveyorFactory(std::shared_ptr<Machine> machine, std::wstring imagesDir) :
-        mMachine(machine), mImagesDir(imagesDir) {}
+    HamsterAndConveyorFactory(std::shared_ptr<Machine> machine, std::wstring imagesDir,
+                              double pulley2Radius=10, bool rock=false) :
+        mMachine(machine), mImagesDir(imagesDir), mPulley2Raduis(pulley2Radius), mRock(rock) {}
 
     /// Default constructor (disabled)
     HamsterAndConveyorFactory() = delete;

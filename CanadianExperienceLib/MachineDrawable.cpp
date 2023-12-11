@@ -28,7 +28,7 @@ void MachineDrawable::Draw(std::shared_ptr <wxGraphicsContext> graphics)
 {
     Run();
 
-    double scale = 0.70f;
+    double scale = 0.75f;
 
     graphics->PushState();
     graphics->Translate(mPlacedPosition.x, mPlacedPosition.y);

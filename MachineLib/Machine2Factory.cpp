@@ -69,12 +69,14 @@ std::shared_ptr<Machine> Machine2Factory::Create()
     //
     TopBeamAndRamp(machine);
 
+    const double pulley2Radius = 30;
+    bool rock = true;
 
     //
     // Create a factory that will manufacture hamster, pulley,
     // pulley, and conveyor assemblies
     //
-    HamsterAndConveyorFactory hamsterAndConveyorFactory(machine, mImagesDir);
+    HamsterAndConveyorFactory hamsterAndConveyorFactory(machine, mImagesDir, pulley2Radius, rock);
 
     //
     // First conveyor with a ball sitting on it
@@ -83,7 +85,7 @@ std::shared_ptr<Machine> Machine2Factory::Create()
     hamsterAndConveyorFactory.AddBall(40);
     auto hamster1 = hamsterAndConveyorFactory.GetHamster();
     auto conveyor1 = hamsterAndConveyorFactory.GetConveyor();
-    hamster1->SetSpeed(-1);
+    hamster1->SetSpeed(-2);
 
     //
     // Second conveyor with a ball on it
@@ -248,13 +250,13 @@ void Machine2Factory::DominoesOnBeam(std::shared_ptr<Machine> machine, wxPoint2D
     beam->SetInitialPosition(position);
     machine->AddComponent(beam);
 
-//    for(int d=0; d<10; d++)
-//    {
-//        // Where to put this domino
-//        auto dominos = position + wxPoint2DDouble(-70 + d * 15, 27);
-//
-//        Domino(machine, dominos, 0, DominoColor::Green);
-//    }
+    for(int d=0; d<10; d++)
+    {
+        // Where to put this domino
+        auto dominos = position + wxPoint2DDouble(-70 + d * 15, 27);
+
+        Domino(machine, dominos, 0, DominoColor::Green);
+    }
 }
 
 

@@ -18,13 +18,14 @@ class StartTimeDlg final : public wxDialog
 private:
     void OnOK(wxCommandEvent& event);
 
-    /// The pointer to the Timeline
+    /// The pointer to the drawable whose start time to edit
     std::shared_ptr<Drawable> mDrawable;
 
-    /// The entered start time
+    /// The entered start time for the relevant drawable
     double mStartTime = 0;
 
 public:
+
     StartTimeDlg(wxWindow *parent, std::shared_ptr<Drawable> drawable);
 
 };

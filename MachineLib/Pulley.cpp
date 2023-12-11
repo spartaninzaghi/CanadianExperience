@@ -27,9 +27,11 @@ const double BeltRockBaseRate = M_PI * 1000;
 /**
  * Constructor
  * @param radius The radius of this pulley
+ * @param rock Indicates whether this pulley has flapping belts
  */
-Pulley::Pulley(double radius)
+Pulley::Pulley(double radius, bool rock)
 {
+    mRock = rock;
     mRadius = radius;
     mPulley.CenteredSquare(mRadius * 2);
 
@@ -44,6 +46,7 @@ void Pulley::Reset()
 {
     mSpeed = 0;
     mRotation = 0;
+    mBeltRockRate = 1;
 }
 
 /**
@@ -85,14 +88,15 @@ void Pulley::Draw(std::shared_ptr<wxGraphicsContext> graphics)
  */
 void Pulley::Rotate(double rotation, double speed)
 {
-    mSpeed =  speed;
-
     //
     // The pulley ratio is 0 (False) if this pulley is not being
     // driven by another pulley
     //
     // Bigger pulleys should rotate slower than smaller pulleys
+    // Bigger pulleys should also transfer slower speed than
+    // smaller pulleys to their rotation sinks
     //
+    mSpeed = mPulleyRatio ? speed * mPulleyRatio : speed;
     mRotation = mPulleyRatio ? rotation * mPulleyRatio : rotation;
 }
 
@@ -170,9 +174,11 @@ void Pulley::DrawBelts(std::shared_ptr<wxGraphicsContext> graphics)
         auto belt2P2 = p2 - offset2;
 
         //
-        // Rock Belts
+        // Rock Belts if this pulley is set to rock
         //
-        RockBelts((wxP2DD &)belt1P1, (wxP2DD &)belt1P2, (wxP2DD &)belt2P1, (wxP2DD &)belt2P2);
+        if (mRock)
+            RockBelts((wxP2DD &)belt1P1, (wxP2DD &)belt1P2,
+                      (wxP2DD &)belt2P1, (wxP2DD &)belt2P2);
 
         //
         // Draw Belt #1 and Belt #2
@@ -242,8 +248,8 @@ double Pulley::ComputeBeta()
     //
     bool isPositiveRotation = mSpeed < 0;
 
-    auto p1 = mPosition;                // P1(x1, y1) : Source center
-    auto p2 = mDrivenPulley->mPosition; // P2(x2, y2) : Sink center
+    auto p1 = mPosition;                    // P1(x1, y1) : Source center
+    auto p2 = mDrivenPulley->mPosition;     // P2(x2, y2) : Sink center
 
     auto r1 = mRadius;                      // Source radius
     auto r2 = mDrivenPulley->mRadius;       // Sink radius

@@ -51,7 +51,7 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     // 2A Create Left Machine and Add It
     //
     auto leftMachineActor = std::make_shared<Actor>(L"LeftMachine");
-    leftMachineActor->SetPosition(wxPoint(350,430));
+    leftMachineActor->SetPosition(wxPoint(450,500));
     auto leftMachine = std::make_shared<MachineDrawable>(L"LeftMachine", resourcesDir);
     leftMachine->SetPosition(leftMachineActor->GetPosition());
     leftMachine->SetStartTime(LeftMachineStartTime);
@@ -63,7 +63,7 @@ std::shared_ptr<Picture> PictureFactory::Create(std::wstring resourcesDir)
     // 2B Create Right Machine and Add It
     //
     auto rightMachineActor = std::make_shared<Actor>(L"RightMachine");
-    rightMachineActor->SetPosition(wxPoint(1150,430));
+    rightMachineActor->SetPosition(wxPoint(1200,500));
     auto rightMachine = std::make_shared<MachineDrawable>(L"RightMachine", resourcesDir);
     rightMachine->SetPosition(rightMachineActor->GetPosition());
     leftMachine->SetStartTime(RightMachineStartTime);

@@ -85,6 +85,7 @@ void Hamster::Update(double elapsed)
     // Update the hamster index if it is running
     //
     mRotation += -mSpeed * elapsed;
+    mRuntime += elapsed;
 
     //
     // Switch to the appropriate hamster image based on the cycle
@@ -122,16 +123,10 @@ void Hamster::Draw(std::shared_ptr<wxGraphicsContext> graphics)
     graphics->PushState();
     graphics->Translate(mWheelPosition.m_x, mWheelPosition.m_y);
 
-    if (!mHamsterIndex) // Sleeping hamster
-        mHamsters[mHamsterIndex]->DrawPolygon(graphics, 0, 0, 0);
+    if(mSpeed < 0 && mHamsterIndex)
+        graphics->Scale(-1, 1);
 
-    else
-    {
-        if(mSpeed < 0)
-            graphics->Scale(-1, 1);
-
-        mHamsters[mHamsterIndex]->DrawPolygon(graphics, 0, 0, 0);
-    }
+    mHamsters[mHamsterIndex]->DrawPolygon(graphics, 0, 0, 0);
 
     graphics->PopState();
 }
@@ -244,6 +239,7 @@ bool Hamster::IsRunning() const
 void Hamster::SetSpeed(double speed)
 {
     mSpeed = speed;
+    mCyclePeriod = 1 / abs(mSpeed) / HamsterSpeed;
 }
 
 /**
@@ -293,9 +289,7 @@ void Hamster::Reset()
  */
 void Hamster::SwitchHamsterImage()
 {
-    auto frame = GetMachine()->GetMachineTime();
-
-    if ( abs(mRotation)/frame > 0 )
+    if (mRunning && mRuntime >= mCyclePeriod / HamsterSpeed)
     {
         //
         // Move forward through the hamster image indices until we arrive at 3
@@ -313,6 +307,11 @@ void Hamster::SwitchHamsterImage()
             mHamsterIndex++;
         else
             mHamsterIndex--;
+
+        //
+        // Reset the hamster runtime for the next cycle
+        //
+        mRuntime = 0;
     }
 }
 

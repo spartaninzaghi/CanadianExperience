@@ -202,7 +202,6 @@ void Picture::SetParent(wxFrame *parent)
 
 /**
  * Edit the machine on the left of the window
- * @param event The menu event
  */
 void Picture::EditLeftMachineNumber()
 {
@@ -213,7 +212,6 @@ void Picture::EditLeftMachineNumber()
 
 /**
  * Edit the machine on the right of the window
- * @param event The menu event
  */
 void Picture::EditRightMachineNumber()
 {

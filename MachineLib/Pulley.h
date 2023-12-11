@@ -36,12 +36,13 @@ private:
     wxPoint2DDouble mPosition = wxPoint2DDouble(0, 0); ///< The location of this pulley (relative to its center)
     std::shared_ptr<Pulley> mDrivenPulley = nullptr;   ///< The sink pulley being driven by this source pulley
 
+    bool mRock = false;       ///< Should the belts of this pulley rock ?
     std::mt19937 mRandom;     ///< Random number generator for belt rock amount
     double mBeltRockRate = 1; ///< How quickly to rock pulley belts in cm/s
 
 public:
 
-    Pulley(double radius);
+    Pulley(double radius, bool rock=false);
 
     double ComputeBeta();
     void Reset() override;
